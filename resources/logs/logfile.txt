@@ -1,0 +1,89 @@
+
+init:
+   [delete] Deleting directory C:\Users\NamahShivae\workspace\AutomationEcosystem\build
+    [mkdir] Created dir: C:\Users\NamahShivae\workspace\AutomationEcosystem\build
+     [copy] Copying 5 files to C:\Users\NamahShivae\workspace\AutomationEcosystem\build
+   [delete] Deleting directory C:\Users\NamahShivae\workspace\AutomationEcosystem\test-output
+    [mkdir] Created dir: C:\Users\NamahShivae\workspace\AutomationEcosystem\test-output
+
+build-project:
+     [echo] testing.Ecosystem: C:\Users\NamahShivae\workspace\AutomationEcosystem\build.xml
+    [javac] Compiling 15 source files to C:\Users\NamahShivae\workspace\AutomationEcosystem\build
+    [javac] warning: [options] bootstrap class path not set in conjunction with -source 1.6
+    [javac] 1 warning
+
+build:
+
+createXML:
+
+DataManipulation:
+     [java] Data Created.
+     [java] XML File saved!
+
+runTests:
+Trying to override old definition of task testng
+   [testng] [TestNG] [ERROR] 
+   [testng] Cannot find class in classpath: Projects.Resdex_MultipleDownloads
+   [testng] The tests failed.
+
+finalReport:
+Trying to override old definition of task testng
+
+DataManipulation:
+     [java] java.io.FileNotFoundException: C:\Users\NamahShivae\workspace\AutomationEcosystem\test-output\testng-results.xml (The system cannot find the file specified)
+     [java] 	at java.io.FileInputStream.open0(Native Method)
+     [java] 	at java.io.FileInputStream.open(FileInputStream.java:195)
+     [java] 	at java.io.FileInputStream.<init>(FileInputStream.java:138)
+     [java] 	at java.io.FileInputStream.<init>(FileInputStream.java:93)
+     [java] 	at sun.net.www.protocol.file.FileURLConnection.connect(FileURLConnection.java:90)
+     [java] 	at sun.net.www.protocol.file.FileURLConnection.getInputStream(FileURLConnection.java:188)
+     [java] 	at org.apache.xerces.impl.XMLEntityManager.setupCurrentEntity(Unknown Source)
+     [java] 	at org.apache.xerces.impl.XMLVersionDetector.determineDocVersion(Unknown Source)
+     [java] 	at org.apache.xerces.parsers.XML11Configuration.parse(Unknown Source)
+     [java] 	at org.apache.xerces.parsers.XML11Configuration.parse(Unknown Source)
+     [java] 	at org.apache.xerces.parsers.XMLParser.parse(Unknown Source)
+     [java] 	at org.apache.xerces.parsers.DOMParser.parse(Unknown Source)
+     [java] 	at org.apache.xerces.jaxp.DocumentBuilderImpl.parse(Unknown Source)
+     [java] 	at javax.xml.parsers.DocumentBuilder.parse(DocumentBuilder.java:177)
+     [java] 	at testing.Ecosystem.DataManipulation.modifyXML(DataManipulation.java:97)
+     [java] 	at testing.Ecosystem.DataManipulation.main(DataManipulation.java:38)
+
+BUILD FAILED
+
+C:\Users\NamahShivae\workspace\AutomationEcosystem\build.xml:33: The following error occurred while executing this line:
+C:\Users\NamahShivae\workspace\AutomationEcosystem\build.xml:185: input file C:\Users\NamahShivae\workspace\AutomationEcosystem\test-output\testng-results.xml does not exist
+	at org.apache.tools.ant.ProjectHelper.addLocationToBuildException(ProjectHelper.java:547)
+	at org.apache.tools.ant.taskdefs.Ant.execute(Ant.java:442)
+	at org.apache.tools.ant.taskdefs.CallTarget.execute(CallTarget.java:105)
+	at org.apache.tools.ant.UnknownElement.execute(UnknownElement.java:291)
+	at sun.reflect.GeneratedMethodAccessor4.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.tools.ant.dispatch.DispatchUtils.execute(DispatchUtils.java:106)
+	at org.apache.tools.ant.Task.perform(Task.java:348)
+	at org.apache.tools.ant.Target.execute(Target.java:435)
+	at org.apache.tools.ant.Target.performTasks(Target.java:456)
+	at org.apache.tools.ant.Project.executeSortedTargets(Project.java:1393)
+	at org.apache.tools.ant.Project.executeTarget(Project.java:1364)
+	at org.apache.tools.ant.helper.DefaultExecutor.executeTargets(DefaultExecutor.java:41)
+	at org.apache.tools.ant.Project.executeTargets(Project.java:1248)
+	at org.apache.tools.ant.Main.runBuild(Main.java:851)
+	at org.apache.tools.ant.Main.startAnt(Main.java:235)
+	at org.apache.tools.ant.launch.Launcher.run(Launcher.java:280)
+	at org.apache.tools.ant.launch.Launcher.main(Launcher.java:109)
+Caused by: C:\Users\NamahShivae\workspace\AutomationEcosystem\build.xml:185: input file C:\Users\NamahShivae\workspace\AutomationEcosystem\test-output\testng-results.xml does not exist
+	at org.apache.tools.ant.taskdefs.XSLTProcess.handleError(XSLTProcess.java:1241)
+	at org.apache.tools.ant.taskdefs.XSLTProcess.execute(XSLTProcess.java:334)
+	at org.apache.tools.ant.UnknownElement.execute(UnknownElement.java:291)
+	at sun.reflect.GeneratedMethodAccessor4.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.tools.ant.dispatch.DispatchUtils.execute(DispatchUtils.java:106)
+	at org.apache.tools.ant.Task.perform(Task.java:348)
+	at org.apache.tools.ant.Target.execute(Target.java:435)
+	at org.apache.tools.ant.Target.performTasks(Target.java:456)
+	at org.apache.tools.ant.Project.executeSortedTargets(Project.java:1393)
+	at org.apache.tools.ant.helper.SingleCheckExecutor.executeTargets(SingleCheckExecutor.java:38)
+	at org.apache.tools.ant.Project.executeTargets(Project.java:1248)
+	at org.apache.tools.ant.taskdefs.Ant.execute(Ant.java:440)
+	... 17 more

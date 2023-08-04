@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="run" name="testing.Ecosystem">
+    <property environment="env"/>
+    <property name="classes.dir" value="build"/>
+	<property name="report.dir" value="test-output"/>
+	<property name="testcasecreation" value="TestCaseCreation"/>
+	<property name="testcases" value="TestCaseCreation/TestCases"/>
+	<property name="logs.dir" value="logs" />
+	<property name="project.lib.dir" value="../lib/jars" />
+	<property name="browserType" value="../MozillaVersions/Mozilla Firefox18/firefox.exe"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.6"/>
+    <property name="source" value="1.6"/>
+	<!-- Server Credentials-->
+	<property name="username" value ="vipul.goyal"/> <!--Enter your Username in value-->
+	<property name="password" value ="atanki@launda"/> <!--Enter your Password in value-->
+		
+	<path id="testing.Ecosystem.classpath">
+        <pathelement location="build"/>
+		<fileset dir="${project.lib.dir}" includes="**/*.jar"/>
+	</path>
+	
+    <path id="classes">
+        <pathelement location="build"/>
+    </path>
+	
+ <!-- -->   
+ 
+	<target name="run">
+	<mkdir dir="resources/${logs.dir}"/>
+	<record name="resources/logs/logfile.txt" action="start" append="false" />
+		<!--antcall target="backupPreProject"/-->
+		<antcall target="build"/>
+		<antcall target="createXML"/>
+		<antcall target="finalReport">
+			<param name="testng.file" value="testng.xml"/>
+		</antcall>
+		<antcall target="DataManipulation">
+			<param name="worktobeperformed" value="CreateExtraXMLs"/>
+		</antcall>
+		<antcall target="openReport"/>
+		<antcall target="clean"/>
+	<record name="resources/logs/logfile.txt" action="stop"/>		
+	</target>
+
+
+	<target name="executefailed">
+		<mkdir dir="resources/${logs.dir}"/>
+	<record name="resources/logs/logfile_failed.txt" action="start" append="false" />
+		<mkdir dir="${java.io.tmpdir}/testng-results"/>
+		<copy file="${report.dir}/testng-results.xml" todir="${java.io.tmpdir}/testng-results"/>
+		<antcall target="build"/>
+		<antcall target="finalReport_executeExtras">
+			<param name="testng.file" value="testng_fail.xml"/>
+		</antcall>
+		<antcall target="openReport"/>
+		<antcall target="clean"/>
+	<record name="resources/logs/logfile_failed.txt" action="stop"/>		
+	</target>
+
+	
+	<target name="executeskipped">
+		<mkdir dir="resources/${logs.dir}"/>
+	<record name="resources/logs/logfile_skipped.txt" action="start" append="false" />
+		<mkdir dir="${java.io.tmpdir}/testng-results"/>
+		<copy file="${report.dir}/testng-results.xml" todir="${java.io.tmpdir}/testng-results"/>
+		<antcall target="build"/>
+		<antcall target="finalReport_executeExtras">
+			<param name="testng.file" value="testng_skip.xml"/>
+		</antcall>
+		<antcall target="openReport"/>
+		<antcall target="clean"/>
+	<record name="resources/logs/logfile_skipped.txt" action="stop"/>		
+	</target>
+	
+	
+	<target name="init">
+		<delete dir="${classes.dir}" />
+        <mkdir dir="${classes.dir}"/>
+        <copy includeemptydirs="false" todir="${classes.dir}">
+            <fileset dir="src">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+		<delete dir="${report.dir}" />
+		<mkdir dir="${report.dir}"/>
+    </target>
+    
+	<target name="setup">
+		<mkdir dir="${classes.dir}"/>
+	    <mkdir dir="${testcasecreation}"/>
+		<mkdir dir="${testcases}"/>
+		<mkdir dir="finalReport"/>
+		<mkdir dir="resources"/>
+		<mkdir dir="resources/logs"/>
+		<mkdir dir="test-output"/>
+		<antcall target="DataManipulation">
+			<param name="worktobeperformed" value="setup"/>	
+		</antcall>
+	</target>
+	
+	
+	<target name="clean">
+        <delete dir="${classes.dir}"/>
+    </target>
+    
+    <target depends="build-project" name="build"/>
+	<target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="${classes.dir}" includeantruntime="false" source="${source}" target="${target}" srcdir="src">
+            <src path="src"/>
+            <classpath refid="testing.Ecosystem.classpath"/>
+        </javac>
+    </target>
+    
+	<!--Define <testng> task-->
+	<taskdef name="testng" classname="org.testng.TestNGAntTask">
+	<classpath>
+		<pathelement location="../lib/*.jar"/>
+		<pathelement location="../lib/testng.jar"/>
+	</classpath>
+	</taskdef>
+	
+	<!--Directory Name where the reports will be saved-->
+	<property name="testng.output.dir" value="testng_output"/>
+	
+	<!-- Take Backup for the present Project executed-->
+	<target name="backup" depends="backupPreProject"/>
+	<target name="backupPreProject">
+	<mkdir dir="resources/PreviousExecutions/execution_${timestamp}/finalReport"/>
+	<mkdir dir="resources/PreviousExecutions/execution_${timestamp}/resources/screenshots"/>
+	<mkdir dir="resources/PreviousExecutions/execution_${timestamp}/resources/logs"/>
+		<copy todir="resources/PreviousExecutions/execution_${timestamp}/finalReport">
+			<fileset dir="finalReport">
+				<include name="*.*"/>
+			</fileset>
+		</copy>
+		<copy todir="resources/PreviousExecutions/execution_${timestamp}/resources/screenshots">
+			<fileset dir="resources/screenshots">
+				<include name="*.*"/>
+			</fileset>
+		</copy>
+		<move todir="resources/PreviousExecutions/execution_${timestamp}/resources/logs">
+			<fileset dir="resources/logs">
+				<include name="*.*"/>
+			</fileset>
+		</move>
+		
+	</target>
+	
+	<target name="DataManipulation">
+ 		<java classname="testing.Ecosystem.DataManipulation" failonerror="true" fork="yes">
+		<arg line="${worktobeperformed} ${grouping}"/>
+			<classpath refid="testing.Ecosystem.classpath"/>
+ 		</java>
+	</target>
+	
+	<target name="generateFunctions">
+ 		<java classname="testing.Ecosystem.PageFunctionsGenerator" failonerror="true" fork="yes">
+		<arg line="${class} ${path}"/>
+			<classpath refid="testing.Ecosystem.classpath"/>
+ 		</java>
+	</target>
+	
+	
+	<target name="createXML">
+	<antcall target="DataManipulation">
+		<param name="worktobeperformed" value="CreateExcel"/>
+	</antcall>
+		<java classname="testing.Ecosystem.WriteXMLFile" failonerror="true" fork="yes">
+			<arg line="${parallelType} ${count} ${grouping} ${browser}"/>
+            <classpath refid="testing.Ecosystem.classpath"/>
+        </java>
+	</target>
+	
+	<target name="createPageFunctions">
+		<java classname="testing.Ecosystem.PageFunctionsGenerator" failonerror="true" fork="yes">
+			<arg line="${class} ${path}"/>
+            <classpath refid="testing.Ecosystem.classpath"/>
+        </java>
+	</target>
+	
+   
+	<target name="runTests">
+	<taskdef resource="testngtasks" classpathref="testing.Ecosystem.classpath"/>
+	<testng outputDir="${report.dir}" haltonfailure="false"	classpathref="testing.Ecosystem.classpath">
+			<xmlfileset dir="${basedir}" includes="${testng.file}"/>
+			<classfileset dir="${classes.dir}" includes="**/*.class" />
+	</testng>
+	</target>
+	
+	
+	<target name="finalReport" depends="runTests">
+	<antcall target="DataManipulation">
+		<param name="worktobeperformed" value="modifyxml"/>
+	</antcall>
+		<mkdir dir="finalReport"/>
+		<xslt in="${report.dir}/testng-results.xml" 
+			style="src/xslt/testng-results.xsl"
+			out="finalReport/index.html" processor="SaxonLiaison">
+			<param name="testNgXslt.outputDir" expression="${basedir}/finalReport"/>
+			<param expression="FAIL,SKIP,PASS,BY_CLASS,DESCRIPTION" name="testNgXslt.testDetailsFilter" />
+			<param name="testNgXslt.showRuntimeTotals" expression="true"/>
+			<classpath refid="testing.Ecosystem.classpath"/>
+		</xslt>
+		<!--delete dir="${report.dir}"/-->
+	</target>
+	
+	
+	<target name="finalReport_executeExtras" depends="runTests">
+	<antcall target="DataManipulation">
+		<param name="worktobeperformed" value="modifyxml"/>
+	</antcall>
+	<antcall target="DataManipulation">
+		<param name="worktobeperformed" value="MergePreviousExecution"/>
+	</antcall>
+	<copy file="${java.io.tmpdir}/testng-results/testng-results.xml" todir="${report.dir}"/>
+		<mkdir dir="finalReport"/>
+		<xslt in="${report.dir}/testng-results.xml" 
+			style="src/xslt/testng-results.xsl"
+			out="finalReport/index.html" processor="SaxonLiaison">
+			<param name="testNgXslt.outputDir" expression="${basedir}/finalReport"/>
+			<param expression="FAIL,SKIP,PASS,BY_CLASS,DESCRIPTION" name="testNgXslt.testDetailsFilter" />
+			<param name="testNgXslt.showRuntimeTotals" expression="true"/>
+			<classpath refid="testing.Ecosystem.classpath"/>
+		</xslt>
+	</target>
+	
+	
+	<target name="openReport"> 
+		<exec executable="${browserType}" spawn="yes"> 
+			<arg line="finalReport/index.html" /> 
+		</exec>
+	</target>
+	
+	<tstamp>
+		<format property="timestamp" pattern="dd-MM-yyyy_HH-mm-ss"/>
+	</tstamp>
+	
+	
+	<target name="commands">
+		<echo message="--------There are different forms using which scripts can be executed in parallel..-----------"/>
+		<echo message="----------------------------------------------------------------------------------------------"/>
+		<echo message="1-> 'ant -DparallelType=methods -Dcount=NumberOFBrowserInstances(1&lt;=count&lt;=5)'"/>
+		<echo message="2-> 'ant -DparallelType=tests -Dcount=NumberOFBrowserInstances(1&lt;=count&lt;=5)'"/>
+		<echo message="----------------------------------------------------------------------------------------------"/>
+<echo>>> parallelType=methods: TestNG will run all your test methods in separate browsers. Number of browsers will be equal to number of Instances. 
+>> parallelType=tests: TestNG will execute all the different TestCase Classes in different browsers, w.r.t number of instances mentioned.
+>> count= Number of Browser Instances required. Should be between 1 to 5.
+</echo>
+		<echo message="**************************************************************************************************************************"/>
+		<echo/>
+		<echo message="--------Commands that can be used to execute the scripts using Groups-------------------"/>
+		<echo message="----------------------------------------------------------------------------------------"/>
+		<echo message="1-> 'ant -Dgrouping=yes -Dbrowser=Name of the browser(Eg:FF17)'"/>
+		<echo message="----------------------------------------------------------------------------------------"/>
+<echo>>> grouping=yes: This will trigger the script execution to be group dependent. 
+When this command is executed, Framework will ask for the Groups which you want to execute.
+Class specific groups will be asked for, and respective execution will be done.
+>> browser: This browser will be used for the execution of the complete group mentioned. 
+If not mentioned, default Firefox Browser installed on the machine will be referred.
+</echo>
+		<echo message="**************************************************************************************************************************"/>
+		<echo/>
+		<echo message="--------Commands that can be used to execute Failed/Skipped TestCases-------------------"/>
+		<echo message="----------------------------------------------------------------------------------------"/>
+		<echo message="1-> 'ant executefailed'"/>
+		<echo message="2-> 'ant executeskipped'"/>
+		<echo message="----------------------------------------------------------------------------------------"/>
+	</target>
+	
+	
+	
+</project>

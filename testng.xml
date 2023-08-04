@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="AutomationEcosystem">
+<listeners>
+	<listener class-name="ngframework.TakeScreenshot"/>
+	<listener class-name="ngframework.TestNGError"/>
+</listeners>
+	<test name="TestName" preserve-order="true">
+	<classes>
+		<class name="project.ClassName">
+		<methods>
+			<include name="TestName">
+				<parameter name="browserType" value="Firefox"/>
+			</include>
+		</methods>
+		</class>
+	</classes>
+	</test>
+</suite>

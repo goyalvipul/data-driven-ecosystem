@@ -1,0 +1,34 @@
+
+public  void commonFill_ABC_Txt(String inputdata){
+driver.findElement(By.xpath(ABC_Txt)).clear();
+driver.findElement(By.xpath(ABC_Txt)).sendKeys(inputdata);
+}
+
+public  void commonClear_ABC_Txt(){
+driver.findElement(By.xpath(ABC_Txt)).clear();
+}
+
+public  void commonClick_ABC_Txt(){
+driver.findElement(By.xpath(ABC_Txt)).click();
+}
+
+public String commonGetText_ABC_Txt(){
+return driver.findElement(By.xpath(ABC_Txt)).getAttribute("value");
+}
+
+public  void commonFill_ABC_Txt(String inputdata){
+driver.findElement(By.xpath(ABC_Txt)).clear();
+driver.findElement(By.xpath(ABC_Txt)).sendKeys(inputdata);
+}
+
+public  void commonClear_ABC_Txt(){
+driver.findElement(By.xpath(ABC_Txt)).clear();
+}
+
+public  void commonClick_ABC_Txt(){
+driver.findElement(By.xpath(ABC_Txt)).click();
+}
+
+public String commonGetText_ABC_Txt(){
+return driver.findElement(By.xpath(ABC_Txt)).getAttribute("value");
+}
